@@ -1,0 +1,33 @@
+select DISTINCT 
+ CUIIO,
+ CUIIO_VERS,
+ CUATM,
+ USER_NAME 
+ 
+ from CIS2.VW_DATA_ALL
+ 
+ WHERE
+ 
+ PERIOADA IN (:pPERIOADA)
+            -- and CUIIO LIKE :pCUIIO||'%'
+            
+            AND CUIIO IN (
+            40501568,
+4136269517,
+37726016,
+36040652,
+41736411,
+4000704174,
+4125415545
+
+            )
+
+
+AND 
+
+FORM IN (:pFORM)
+
+
+
+order by
+CUIIO
