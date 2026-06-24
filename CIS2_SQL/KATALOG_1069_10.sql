@@ -1,0 +1,8 @@
+SELECT  L.CUIIO AS L_CUIIO, 
+        R.CUIIO AS R_CUIIO
+
+    FROM VW_43_2015 L RIGHT JOIN VW_45_1069 R ON R.CUIIO = L.CUIIO 
+    
+    
+            WHERE 
+            L.CUIIO IS not NULL;
