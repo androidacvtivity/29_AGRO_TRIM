@@ -1,41 +1,14 @@
-// Analyze the project file - get to know the project.
-// Modify the validation in the following logic.
-//Rând. 5100 col. 1 ≥ rând. 2000 col. 1- rând. 2100 col. 1
-function validate_CAP1_5100_vs_2000_F(values) {
-    var col = "C1";
 
-    for (var j = 0; j < values.CAP_NUM_FILIAL.length; j++) {
-        var CUATM = String(values.CAP_CUATM_FILIAL[j] || "");
-        var r5100_F = values["CAP1_R5100_" + col + "_FILIAL"] && !isNaN(Number(values["CAP1_R5100_" + col + "_FILIAL"][j]))
-            ? Number(values["CAP1_R5100_" + col + "_FILIAL"][j]) : 0;
-        var r2000_F = values["CAP1_R2000_" + col + "_FILIAL"] && !isNaN(Number(values["CAP1_R2000_" + col + "_FILIAL"][j]))
-            ? Number(values["CAP1_R2000_" + col + "_FILIAL"][j]) : 0;
+Analizeaza fisierile si creaza o validare 
+cu codul - ultimul numar al codului + 1 
+formula 
+Daca cap.I rând.5000 col.1 > rând.5100 col.1, trebuie sa fie și date în capitolul II col. 1(în rând.7100  sau rând.7200  sau rând.7300  sau rând.7400  sau rând.7500)
+Da-mi functiile 
 
-        if (r5100_F < r2000_F) {
-            webform.errors.push({
-                'fieldName': 'CAP1_R5100_' + col + '_FILIAL',
-                'index': j,
-                'weight': 19,
-                'msg': Drupal.t('Raion: @CUATM - Cod eroare: 45-2000-F. Rând.5100 col.1 trebuie să fie ≥ Rând.2000 col.1. Valoare 5100: ' + r5100_F + ', valoare 2000: ' + r2000_F, {
-                    '@CUATM': CUATM
-                })
-            });
-        }
-    }
-}
+Acum creaza validarea -- 
+Cap.II rând. 7100 și / sau rând.7200 și / sau rând.7300 și / sau rând.7400 și / sau rând.7500 col.1 sunt date, trebuie sa fie date în cap.I rând.5000 col.1
+
+Daca sunt date în cap.I rând.5000 col.1 și nu sunt date în rând.5100 col.1, trebuie sa fie date în cap.II rând. 7100 și / sau rând.7200 și / sau rând.7300 și / sau rând.7400 și / sau rând.7500 col.1(nustiu cam asa ar trebuie sa fie - cap.I rând.5000 col.1 > 0 si rind.5100 = 0, atunci exista date in în cap.II rând. 7100 și / sau rând.7200 și / sau rând.7300 și / sau rând.7400 și / sau rând.7500 col.1) 
 
 
-function validate_CAP1_5100_vs_2000(values) {
-    var col = "C1";
-    var r5100 = !isNaN(Number(values["CAP1_R5100_" + col])) ? Number(values["CAP1_R5100_" + col]) : 0;
-    var r2000 = !isNaN(Number(values["CAP1_R2000_" + col])) ? Number(values["CAP1_R2000_" + col]) : 0;
-
-    if (r5100 < r2000) {
-        webform.errors.push({
-            'fieldName': 'CAP1_R5100_' + col,
-            'weight': 19,
-            'msg': Drupal.t('Cod eroare: 45-2000. Rând.5100 col.1 trebuie să fie ≥ Rând.2000 col.1. Valoare 5100: ' + r5100 + ', valoare 2000: ' + r2000)
-        });
-    }
-}
-
+ma corectezi sau analizam impreuna
