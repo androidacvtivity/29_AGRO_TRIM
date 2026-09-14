@@ -1,0 +1,60 @@
+RAPORT 29-AGR – FUNCȚIONALITATE COD CUATM
+
+Fișier JS:
+29_AGR_046.js
+
+Scop:
+Pentru câmpul CAP_CUATM_FILIAL se adaugă o listă Select2 cu codurile CUATM și denumirile localităților/raioanelor preluate din fișierul VW_CL_CUATM.xlsx.
+
+Câmp:
+dec/DataSet/Data/CAP/CAP_R[line]/CAP_CUATM_FILIAL
+
+Exemplu afișat în formular:
+1700000 - R-UL CAHUL
+
+Valoarea salvată:
+1700000
+
+Funcționalitatea adăugată:
+1. Încarcă lista codurilor CUATM în câmpul CAP_CUATM_FILIAL.
+2. Afișează codul + denumirea în Select2.
+3. Păstrează numai codul CUATM ca valoare.
+4. Păstrează valoarea deja salvată la redeschiderea raportului.
+5. Funcționează și pentru rândurile/raioanele adăugate dinamic.
+6. Sincronizează selecția cu:
+   Drupal.settings.mywebform.values.CAP_CUATM_FILIAL
+7. Nu modifică validările existente.
+8. Validarea existentă pentru coduri CUATM duplicate rămâne activă.
+
+În attach() au fost adăugate apelurile:
+initAgr29CuatmFilialSelectors(context);
+bindAgr29CuatmFilialEvents();
+
+Exemplu structură listă JS:
+
+var AGR29_CUATM_OPTIONS = [
+    { id: '0100000', text: '0100000 - MUN.CHISINAU' },
+    { id: '0300000', text: '0300000 - MUN.BALTI' },
+    ...
+    { id: '1700000', text: '1700000 - R-UL CAHUL' },
+    ...
+    { id: '9600000', text: '9600000 - UTA GAGAUZIA' },
+    { id: '9800000', text: '9800000 - UATdS NISTRULUI' }
+];
+
+Test recomandat:
+1. Deschide raportul 29-AGR.
+2. Adaugă un raion.
+3. La „Cod CUATM” deschide lista.
+4. Selectează, de exemplu:
+   1700000 - R-UL CAHUL
+5. Salvează raportul.
+6. Redeschide raportul.
+7. Verifică dacă valoarea 1700000 - R-UL CAHUL rămâne selectată.
+8. Adaugă încă un raion și verifică dacă Select2 apare și pe rândul nou.
+
+Fișierul JS rezultat:
+29_AGR_046.js
+
+Observație:
+Browserul nu citește direct fișierul Excel la fiecare deschidere a raportului. Codurile și denumirile CUATM din VW_CL_CUATM.xlsx sunt introduse în lista JavaScript.
