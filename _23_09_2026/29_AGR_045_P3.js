@@ -1,4 +1,3 @@
-//Creaza validarea submit  Rind. 2000 col.1 >= rind.2100 col.1 - pentru raport static si filiale  functie - si dami functia 
 (function ($) {
     Drupal.behaviors.agr29 = {
         attach: function (context, settings) {
@@ -93,12 +92,205 @@ function toggle_A09(values) {
         ">${errorMsg}</div>`);
     }
 }
+// --------------------------------------------------------------
+// Rând.2000 col.1 >= Rând.2100 col.1
+// Validare pentru raport static + filiale
+
+function validate_CAP1_R2000_C1_vs_R2100_C1(values) {
+    var col = "C1";
+
+    // ----------------------------------------------------------
+    // RAPORT STATIC
+    // ----------------------------------------------------------
+
+    var r2000 = !isNaN(Number(values["CAP1_R2000_" + col]))
+        ? Number(values["CAP1_R2000_" + col])
+        : 0;
+
+    var r2100 = !isNaN(Number(values["CAP1_R2100_" + col]))
+        ? Number(values["CAP1_R2100_" + col])
+        : 0;
+
+    if (r2000 < r2100) {
+        webform.errors.push({
+            'fieldName': 'CAP1_R2000_' + col,
+            'weight': 19,
+            'msg': Drupal.t(
+                'Rând.2000 col.1 trebuie să fie mai mare sau egal cu Rând.2100 col.1. ' +
+                'Valoare Rând.2000 col.1: ' + r2000 +
+                ', valoare Rând.2100 col.1: ' + r2100
+            )
+        });
+    }
+
+
+    // ----------------------------------------------------------
+    // FILIALE
+    // ----------------------------------------------------------
+
+    if (!values.CAP_NUM_FILIAL) {
+        return;
+    }
+
+    for (var j = 0; j < values.CAP_NUM_FILIAL.length; j++) {
+
+        var CUATM = String(
+            values.CAP_CUATM_FILIAL &&
+                values.CAP_CUATM_FILIAL[j]
+                ? values.CAP_CUATM_FILIAL[j]
+                : ""
+        );
+
+        var r2000_F =
+            values["CAP1_R2000_" + col + "_FILIAL"] &&
+                !isNaN(Number(
+                    values["CAP1_R2000_" + col + "_FILIAL"][j]
+                ))
+                ? Number(
+                    values["CAP1_R2000_" + col + "_FILIAL"][j]
+                )
+                : 0;
+
+        var r2100_F =
+            values["CAP1_R2100_" + col + "_FILIAL"] &&
+                !isNaN(Number(
+                    values["CAP1_R2100_" + col + "_FILIAL"][j]
+                ))
+                ? Number(
+                    values["CAP1_R2100_" + col + "_FILIAL"][j]
+                )
+                : 0;
+
+        if (r2000_F < r2100_F) {
+            webform.errors.push({
+                'fieldName': 'CAP1_R2000_' + col + '_FILIAL',
+                'index': j,
+                'weight': 19,
+                'msg': Drupal.t(
+                    'Raion: @CUATM - Rând.2000 col.1 trebuie să fie mai mare sau egal cu Rând.2100 col.1. ' +
+                    'Valoare Rând.2000 col.1: ' + r2000_F +
+                    ', valoare Rând.2100 col.1: ' + r2100_F,
+                    {
+                        '@CUATM': CUATM
+                    }
+                )
+            });
+        }
+    }
+}
+
+
+// --------------------------------------------------------------
+// Rând.6100 - Rând.6400
+// Dacă în col.2 sunt date, atunci trebuie să fie date și în col.1
+// Validare pentru raport static + filiale
+
+function validate_CAP1_6100_6400_C2_requires_C1(values) {
+
+    var rows = [
+        6100,
+        6200,
+        6300,
+        6400
+    ];
+
+    // ----------------------------------------------------------
+    // RAPORT STATIC
+    // ----------------------------------------------------------
+
+    for (var i = 0; i < rows.length; i++) {
+
+        var row = rows[i];
+
+        var col1 = !isNaN(Number(values["CAP1_R" + row + "_C1"]))
+            ? Number(values["CAP1_R" + row + "_C1"])
+            : 0;
+
+        var col2 = !isNaN(Number(values["CAP1_R" + row + "_C2"]))
+            ? Number(values["CAP1_R" + row + "_C2"])
+            : 0;
+
+        if (col2 !== 0 && col1 === 0) {
+            webform.errors.push({
+                'fieldName': 'CAP1_R' + row + '_C1',
+                'weight': 19,
+                'msg': Drupal.t(
+                    'Rând.' + row +
+                    ': dacă în col.2 sunt date, atunci trebuie să fie completată și col.1. ' +
+                    'Valoare col.1: ' + col1 +
+                    ', valoare col.2: ' + col2
+                )
+            });
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    // FILIALE
+    // ----------------------------------------------------------
+
+    if (!values.CAP_NUM_FILIAL) {
+        return;
+    }
+
+    for (var j = 0; j < values.CAP_NUM_FILIAL.length; j++) {
+
+        var CUATM = String(
+            values.CAP_CUATM_FILIAL &&
+                values.CAP_CUATM_FILIAL[j]
+                ? values.CAP_CUATM_FILIAL[j]
+                : ""
+        );
+
+        for (var k = 0; k < rows.length; k++) {
+
+            var row_F = rows[k];
+
+            var col1_F =
+                values["CAP1_R" + row_F + "_C1_FILIAL"] &&
+                    !isNaN(Number(
+                        values["CAP1_R" + row_F + "_C1_FILIAL"][j]
+                    ))
+                    ? Number(
+                        values["CAP1_R" + row_F + "_C1_FILIAL"][j]
+                    )
+                    : 0;
+
+            var col2_F =
+                values["CAP1_R" + row_F + "_C2_FILIAL"] &&
+                    !isNaN(Number(
+                        values["CAP1_R" + row_F + "_C2_FILIAL"][j]
+                    ))
+                    ? Number(
+                        values["CAP1_R" + row_F + "_C2_FILIAL"][j]
+                    )
+                    : 0;
+
+            if (col2_F !== 0 && col1_F === 0) {
+                webform.errors.push({
+                    'fieldName': 'CAP1_R' + row_F + '_C1_FILIAL',
+                    'index': j,
+                    'weight': 19,
+                    'msg': Drupal.t(
+                        'Raion: @CUATM - Rând.' + row_F +
+                        ': dacă în col.2 sunt date, atunci trebuie să fie completată și col.1. ' +
+                        'Valoare col.1: ' + col1_F +
+                        ', valoare col.2: ' + col2_F,
+                        {
+                            '@CUATM': CUATM
+                        }
+                    )
+                });
+            }
+        }
+    }
+}
 
 webform.validators.agr29 = function (v, allowOverpass) {
     var values = Drupal.settings.mywebform.values;
-
-
-    // 29_AGR_040
+    validate_CAP1_6100_6400_C2_requires_C1(values);
+    validate_CAP1_R2000_C1_vs_R2100_C1(values);
+    
     //-----------------------------------------------------
 
     validatePhoneNumber(values.PHONE);
