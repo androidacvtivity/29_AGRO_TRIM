@@ -1,0 +1,5 @@
+Analizati 
+29_AGR_045_P3.js,
+web.html
+
+De creat o functie in js - care daca se introduce virgula - adica un numar cu virgula sa o transforme in punct - fiindca nu primeste virgula - daca trebuie trebuie 
