@@ -378,7 +378,7 @@ webform.validators.agr29 = function (v, allowOverpass) {
     validate45_010(values);
     validate45_011(values);
    // validate45_012(values);
-    validate45_013(values);
+   // validate45_013(values);
     validate_1800_C3(values);
 
 
@@ -395,15 +395,15 @@ webform.validators.agr29 = function (v, allowOverpass) {
     validate45_010_F(values);
     validate45_011_F(values);
     //validate45_012_F(values);
-  //  validate45_013_F(values);
+   // validate45_013_F(values);
 
     validate_CUATM_FILIAL(values);
 
     validate_CAP1_R5000_C1(values);
     validate_CAP1_R5000_C1_F(values);
 
-    validate_CAP1_R5100_C1(values);
-    validate_CAP1_R5100_C1_F(values);
+    //validate_CAP1_R5100_C1(values);
+    //validate_CAP1_R5100_C1_F(values);
 
     validate45_2002(values);
     validate45_2002_F(values);
